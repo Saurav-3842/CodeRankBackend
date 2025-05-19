@@ -41,7 +41,7 @@ const createOTP = async (req, res) => {
       createdAt: { $gte: Date.now() - 10 * 60 * 1000 },
     });
 
-    if (!isResend && recentOTP) {
+    if (isResend && recentOTP) {
       return res.status(403).json({
         status: "fail",
         message: "OTP already sent. Try 'Resend OTP'.",

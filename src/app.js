@@ -19,7 +19,7 @@ app.use(express.json());
 // req cookies will be parsed
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:3000', 
+    origin: true, 
     methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
     credentials: true,
     // allowedHeaders: ['Content-Type', 'Authorization'], 
@@ -39,6 +39,7 @@ app.get('/isAuthenticated', authenticateUser, async (req, res) => {
             _id: req.user._id,
             email: req.user.email,
             fullname: req.user.fullname,
+            college: req.user.college,
             // Add other fields you want to expose
           }
         }

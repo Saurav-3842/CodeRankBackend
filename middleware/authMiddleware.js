@@ -6,7 +6,7 @@ const authenticateUser = async (req, res, next) => {
   try {
     // Get token from cookies
     const token = req.cookies.token;
-    console.log(token);
+    
     if (!token) {
       return res.status(401).json({
         status: 'fail',
@@ -25,7 +25,7 @@ const authenticateUser = async (req, res, next) => {
         message: 'The user belonging to this token no longer exists'
       });
     }
-    console.log(currentUser);
+    
     // Attach user to request
     req.user = currentUser;
     next();
