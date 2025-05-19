@@ -19,7 +19,7 @@ app.use(express.json());
 // req cookies will be parsed
 app.use(cookieParser());
 app.use(cors({
-    origin: true, 
+    origin: process.env.FRONTEND_URL, 
     methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
     credentials: true,
     // allowedHeaders: ['Content-Type', 'Authorization'], 
