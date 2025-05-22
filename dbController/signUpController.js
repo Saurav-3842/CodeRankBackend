@@ -68,7 +68,7 @@ const registerUser = async (req, res) => {
           _id: newUser._id
         },
         process.env.jwt_secret_key,
-        { expiresIn: '100m' } // 10 minutes
+        { expiresIn: process.env.JWT_EXPIRES_IN || "1h" }
       );
   
       // Set cookie
@@ -76,7 +76,7 @@ const registerUser = async (req, res) => {
         sameSite: "None",
         secure: true,
         httpOnly: true,
-        maxAge: 900000, // 15 minutes
+        maxAge: parseInt(process.env.COOKIE_EXPIRES_IN_MS || "3600000", 10)
       });
   
       // Return success response

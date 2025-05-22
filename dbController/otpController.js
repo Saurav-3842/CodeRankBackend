@@ -15,7 +15,7 @@ const createOTP = async (req, res) => {
 
     const existingUser = await SignUpList.findOne({ email });
 
-    // 🟢 Signup flow: user should not exist
+    
     if (!isForgotPassword && !isResend) {
       if (existingUser) {
         return res.status(409).json({
@@ -25,7 +25,7 @@ const createOTP = async (req, res) => {
       }
     }
 
-    // 🔴 Forgot password: user must exist
+    
     if (isForgotPassword) {
       if (!existingUser) {
         return res.status(404).json({
@@ -35,7 +35,7 @@ const createOTP = async (req, res) => {
       }
     }
 
-    // Check if OTP already sent recently (last 10 minutes)
+    
     const recentOTP = await OTP.findOne({
       email,
       createdAt: { $gte: Date.now() - 10 * 60 * 1000 },
@@ -73,7 +73,7 @@ const createOTP = async (req, res) => {
       return;
     }
 
-    // hashing
+   
     const salt = await bcrypt.genSalt(10);
     const hashedOTP = await bcrypt.hash("" + OTPValue, salt);
 

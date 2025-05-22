@@ -23,7 +23,7 @@ const resetPassword = async (req, res) => {
 
     const validOtpEntry = await OTP.findOne({
       email,
-      createdAt: { $gte: Date.now() - 10 * 60 * 1000 }, // OTP is valid for 10 minutes
+      createdAt: { $gte: Date.now() - 10 * 60 * 1000 }, 
     });
 
     if (!validOtpEntry) {
@@ -44,9 +44,6 @@ const resetPassword = async (req, res) => {
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 
     await SignUpList.updateOne({ email }, { password: hashedPassword });
-
-    // Optional: Remove OTP after successful use
-    // await OTP.deleteMany({ email });
 
     res.status(200).json({
       status: "success",

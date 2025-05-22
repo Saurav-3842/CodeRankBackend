@@ -1,4 +1,3 @@
-// const { SignUpList } = require("../model/signUp");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { SignUpList } = require("../models/signUpSchema");
@@ -27,9 +26,7 @@ const loginUser = async (req, res) => {
     console.log(userDetails._id);
     const { password: dbPassword, fullname, _id } = userDetails || {};
     const isPasswordCorrect = await bcrypt.compare(userPassword, dbPassword);
-    // console.log("🟡 : dbOtp:", dbOtp);
-    // console.log("🟡 : userOtp:", userOtp);
-    // console.log("🟡 : isOTPCorrect:", isPasswordCorrect);
+   
     if (!isPasswordCorrect) {
       res.status(401).json({
         status: "fail",
@@ -45,15 +42,15 @@ const loginUser = async (req, res) => {
         _id: userDetails._id,
       },
       process.env.jwt_secret_key,
-      { expiresIn: "10m" } // 10 minutes
+      { expiresIn: process.env.JWT_EXPIRES_IN || "1h" }
     );
 
-    // Set cookie
+    
     res.cookie("token", token, {
       sameSite: "None",
       secure: true,
       httpOnly: true,
-      maxAge: 900000, // 15 minutes
+     maxAge: parseInt(process.env.COOKIE_EXPIRES_IN_MS || "3600000", 10)
     });
 
     res.status(200).json({
@@ -61,11 +58,11 @@ const loginUser = async (req, res) => {
       message: "User LoggedIn",
       data: {
         user: {
-            _id: userDetails._id,
-            email: userDetails.email,
-            fullname: userDetails.fullname,
-            college: userDetails.college
-          },
+          _id: userDetails._id,
+          email: userDetails.email,
+          fullname: userDetails.fullname,
+          college: userDetails.college,
+        },
       },
     });
   } catch (err) {
@@ -80,7 +77,7 @@ const loginUser = async (req, res) => {
 
 const logoutUser = async (req, res) => {
   try {
-    // Clear the JWT cookie
+   
     res.clearCookie("token", {
       sameSite: "None",
       secure: true,
