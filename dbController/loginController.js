@@ -26,7 +26,7 @@ const loginUser = async (req, res) => {
     console.log(userDetails._id);
     const { password: dbPassword, fullname, _id } = userDetails || {};
     const isPasswordCorrect = await bcrypt.compare(userPassword, dbPassword);
-   
+
     if (!isPasswordCorrect) {
       res.status(401).json({
         status: "fail",
@@ -42,15 +42,14 @@ const loginUser = async (req, res) => {
         _id: userDetails._id,
       },
       process.env.jwt_secret_key,
-      { expiresIn: process.env.JWT_EXPIRES_IN || "1h" }
+      { expiresIn: process.env.JWT_EXPIRES_IN || "1h", algorithm: "HS256" }
     );
 
-    
     res.cookie("token", token, {
-      sameSite: "None",
-      secure: true,
       httpOnly: true,
-     maxAge: parseInt(process.env.COOKIE_EXPIRES_IN_MS || "3600000", 10)
+      secure: true,
+      sameSite: "none",
+      maxAge: parseInt(process.env.COOKIE_EXPIRES_IN_MS || "3600000", 10),
     });
 
     res.status(200).json({
@@ -77,7 +76,6 @@ const loginUser = async (req, res) => {
 
 const logoutUser = async (req, res) => {
   try {
-   
     res.clearCookie("token", {
       sameSite: "None",
       secure: true,
