@@ -57,6 +57,7 @@ const loginUser = async (req, res) => {
       status: "success",
       message: "User LoggedIn",
       data: {
+        token, // remove on prod (when same domain)
         user: {
           _id: userDetails._id,
           email: userDetails.email,
