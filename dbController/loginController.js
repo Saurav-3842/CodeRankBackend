@@ -48,8 +48,9 @@ const loginUser = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
-      sameSite: "none",
+      sameSite: "None",
       maxAge: parseInt(process.env.COOKIE_EXPIRES_IN_MS || "3600000", 10),
+      domain: process.env.FRONTEND_URL.replace('https://','.'),
     });
 
     res.status(200).json({
