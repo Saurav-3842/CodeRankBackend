@@ -50,7 +50,7 @@ const loginUser = async (req, res) => {
       secure: true,
       sameSite: "None",
       maxAge: parseInt(process.env.COOKIE_EXPIRES_IN_MS || "3600000", 10),
-      domain: process.env.FRONTEND_URL.replace('https://','.'),
+      // domain: process.env.FRONTEND_URL.replace('https://','.'),
     });
 
     res.status(200).json({
